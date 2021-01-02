@@ -1,0 +1,15 @@
+{% extends 'layout/basic.html' %}
+
+{% block title %}Профиль {{ user.username }} {% endblock %}
+
+{% block content %}
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">Профиль {{ user.username }} </h1>
+        <p class="lead">Имя: {{ user.first_name }}</p>
+        <p class="lead">Фамилия: {{ user.last_name }}</p>
+        <p class="lead">Электронная почта: {{ user.email }}</p>
+        <p class="lead">Дата регистрации: {{ user.date_joined }}</p>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'layout/basic.html' %}
+
+{% block title %} Регистрация {% endblock %}
+
+{% block content %}
+
+    <div class="container" style="margin-top: 200px;">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-6">
+                <div>
+                    <article class="card-body">
+                        <h4 class="card-title text-center mb-4 mt-1">Регистрация</h4>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="username" id="inputUsername" class="form-control" placeholder="Имя пользователя"
+                                           required="" autofocus="" name="username">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="username" id="inputUsername" class="form-control" placeholder="Фамилия"
+                                           required="" autofocus="" name="last_name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="username" id="inputUsername" class="form-control" placeholder="Имя"
+                                           required="" autofocus="" name="first_name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="email" id="inputUsername" class="form-control" placeholder="Электронная почта"
+                                           required="" autofocus="" name="email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="password" id="inputPassword" class="form-control" placeholder="Пароль" required="" name="password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="password" id="inputPassword" class="form-control" placeholder="Повтор пароля" required="" name="password2">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button>
+                            </div>
+                            <div class="mt-4 text-center">
+                                <small>Уже есть аккаунт?</small>
+                                <a href="{% url 'login' %}" class="small font-weight-bold">Войти</a>
+                                <h5 class="text-danger">{{ error }}</h5>
+                            </div>
+                        </form>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

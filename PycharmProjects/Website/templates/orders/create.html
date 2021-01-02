@@ -1,0 +1,59 @@
+{% extends 'layout/basic.html' %}
+
+{% block title %}Совершение покупки{% endblock %}
+
+{% block content %}
+    <h1 class="text-center display-4">Совершение покупки</h1>
+    <p></p>
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Ваш заказ</h3>
+                        <ul>
+                            {% for item in cart %}
+                                <li>
+                                    {{ item.quantity }}x {{ item.product_image.product.title }} -
+                                    <span class="font-weight-bolder">{{ item.total_price }} руб</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <p class="lead">Итого: {{ cart.get_total_price }} руб</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p></p>
+        <div class="container">
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6">
+                    <p class="text-center lead">{{ user.username }}!
+                        Укажите, пожалйста, дополнительные данные для совершения покупки</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="username" id="inputUsername" class="form-control" placeholder="Город"
+                                       required="" autofocus="" name="city">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="username" id="inputUsername" class="form-control" placeholder="Адрес"
+                                       required="" autofocus="" name="address">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="number" id="inputUsername" class="form-control" placeholder="Почтовый индекс"
+                                       required="" autofocus="" name="postal_code" min="1">
+                            </div>
+                        </div>
+                        <p><input type="submit" value="Купить" class="btn btn-success"></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

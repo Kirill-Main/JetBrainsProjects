@@ -1,0 +1,58 @@
+{% load bootstrap4 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+    <title>{% block title %} Главная {% endblock %}</title>
+    <link rel="shortcut icon" href="/images/static/images/favicon.png" type="image/png">
+    <script type="text/javascript" src={% static "javascript/feedback_update.js" %}></script>
+    <script type="text/javascript" src={% static "javascript/quantity_update.js" %}></script>
+    <script type="text/javascript" src={% static "javascript/search_text.js" %}></script>
+</head>
+<body>
+<!-- Шапка -->
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+    <a href="{% url 'index' %}" class="my-0 mr-md-auto font-weight-normal"><h5>Магазин техники</h5></a>
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            {% if cart|length > 0 %}
+                <a class="nav-link" href="{% url 'cart:cart_detail' %}" id="cart_length">Корзина ({{ cart|length }})</a>
+            {% endif %}
+        </li>
+        <li class="nav-item dropdown dropleft">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Категории</a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                {% for category in categories %}
+                    <a class="dropdown-item" href="{% url 'by_category' category.pk %}">{{ category.name }}</a>
+                {% endfor %}
+            </div>
+        </li>
+        {#        <li class="nav-item">#}
+        {#            <a class="nav-link" href="{% url 'add' %}">Добавить товар</a>#}
+        {#        </li>#}
+        {% if user.is_authenticated %}
+            <li class="nav-item dropdown dropleft">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <a class="dropdown-item" href="{% url 'profile' %}">Профиль</a>
+                    <a class="dropdown-item" href="{% url 'logout' %}">Выход</a>
+                </div>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'login' %}">Войти</a>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+
+<!-- Основной блок -->
+<section>
+    {% block content %}
+    {% endblock %}
+</section>
+
+</body>

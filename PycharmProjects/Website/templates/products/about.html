@@ -1,0 +1,92 @@
+{% extends 'layout/basic.html' %}
+
+{% block title %}Купить {{ current_product.title }} {% endblock %}
+
+{% block content %}
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">{{ current_product.title }}</h1>
+        <p class="lead">{{ current_product.content }}</p>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            {% for current_product_image in current_product_images %}
+                <div class="col-md-4 col-sm-6" style="padding: 15px">
+                    <img src="{{ current_product_image.image.url }}" class="rounded mx-auto d-block" alt="Нет избражения">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!--Добавить в корзину-->
+    <div class="text-center" style="margin-top: 20px;">
+        <h4>{{ current_product.price }} руб</h4>
+        {% if current_product in cart %}
+            <form action="{% url 'cart:cart_detail' %}" method="post">
+                {% csrf_token %}
+                <p></p>
+                <button type="submit" class="btn btn-outline-success">Перейти в корзину</button>
+            </form>
+        {% else %}
+            <form action="{% url 'cart:cart_add' current_product.id %}" method="post">
+                {% csrf_token %}
+                <p></p>
+{#                <input type="number" class="form-control" value="1" name='quantity' min="1" style="display: none;">#}
+                <input type="submit" value="Добавить в корзину" class="btn btn-outline-success">
+            </form>
+        {% endif %}
+    </div>
+
+
+    <!-- Блок отзывов -->
+    <div class="col-md-12" style="margin-top: 20px;">
+
+        <!-- Оставить отзыв -->
+        {% if user.is_authenticated %}
+            <form id="send_form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <textarea class="form-control" name="message" rows="3" placeholder="Оставьте отзыв о этом товаре" maxlength="150"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-check-label">Рекомендуете ли товар к покупке?</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="is_recommended" id="exampleRadios1" value="yes" checked>
+                        <label class="form-check-label" for="exampleRadios1"> Да </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="is_recommended" id="exampleRadios2" value="no">
+                        <label class="form-check-label" for="exampleRadios2"> Нет </label>
+                    </div>
+                </div>
+                <input class="btn" id="clear_form" type="reset" hidden=""/>
+                <a class="btn btn-success" onclick="feedback_update({{ current_product.id }})" style="color: white;">Добавить</a>
+                <h5 class="text-danger"></h5>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}" class="font-weight-bold lead">Войдите</a>
+            <small class="text-info lead">, чтобы оставить отзыв о этом товаре</small>
+        {% endif %}
+
+        <!-- Отзывы -->
+        <h3 style="margin-top: 20px;" id="count">Отзывы ({{ feedbacks_count }})</h3>
+        <hr>
+        <div id="add">
+            {% for feedback in feedbacks %}
+                <div>
+                    <span class="font-weight-bold lead" id="put_before">{{ feedback.user }}</span>
+                    <span class="text-muted text-sm">{{ feedback.published|date:"d.m.Y" }}</span>
+                    {% if feedback.is_recommended %}
+                        <p class="text-success">Рекомендует</p>
+                    {% else %}
+                        <p class="text-danger">Не рекомендует</p>
+                    {% endif %}
+                    <p>{{ feedback.content }}</p>
+                    <hr>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock %}

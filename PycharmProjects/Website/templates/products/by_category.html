@@ -1,0 +1,34 @@
+{% extends 'layout/basic.html' %}
+
+{% block title %} {{ current_category.name }} {% endblock %}
+
+{% block content %}
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">{{ current_category.name }}</h1>
+        {% if not has_products_in_directory %}
+            <p class="lead">Пока в этом разделе нет товаров. Заходите позже!</p>
+        {% endif %}
+    </div>
+
+    <div class="container">
+        <div class="row">
+            {% if has_products_in_directory %}
+                {% for product_image in products_images %}
+                    <div class="col-md-4 col-sm-6" style="padding: 15px">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <a href="{% url 'about' product_image.product.pk %}">
+                                    <img src="{{ product_image.image.url }}" class="rounded mx-auto d-block" alt="Нет избражения" height="200">
+                                </a>
+                                <h4 class="card-title">{{ product_image.product.title }}</h4>
+                                <h6 class="card-title pricing-card-title">{{ product_image.product.price }} руб</h6>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+{%  endblock %}

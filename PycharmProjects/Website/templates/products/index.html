@@ -1,0 +1,33 @@
+{% extends 'layout/basic.html' %}
+
+{% block content %}
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">Главная</h1>
+        <p class="lead">Добро пожаловать в наш магазин! Выберите конкретную
+            категорию для покупки товара или просмотрите внизу весь список товаров, доступных в нашем магазине!
+        </p>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            {% for product_image in products_images %}
+                <div class="col-md-4 col-sm-6" style="padding: 15px">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <a href="{% url 'about' product_image.product.pk %}">
+                                <img src="{{ product_image.image.url }}" class="rounded mx-auto d-block" alt="Нет избражения" height="200">
+                            </a>
+                            <h4 class="card-title">{{ product_image.product.title }}</h4>
+                            <h6 class="card-title pricing-card-title">{{ product_image.product.price }} руб</h6>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li><a href="{% url 'by_category' product_image.product.category.pk %}">{{ product_image.product.category.name }}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{%  endblock %}

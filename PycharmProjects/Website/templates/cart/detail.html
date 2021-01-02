@@ -1,0 +1,68 @@
+{% extends 'layout/basic.html' %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+
+    {% if cart|length > 0 %}
+        <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+            <h1 class="display-4">Корзина</h1>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Изображение</th>
+                            <th scope="col">Название товара</th>
+                            <th scope="col">Количество</th>
+                            <th scope="col">Удалить</th>
+                            <th scope="col">Цена за товар</th>
+                            <th scope="col">Общая цена</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in cart %}
+                            <tr>
+                                <td width="5%">
+                                    <a href="{% url 'about' item.product_image.product.id %}">
+                                        <img src="{{ item.product_image.image.url }}" class="rounded mx-auto d-block" alt="Нет избражения" height="50">
+                                    </a>
+                                </td>
+                                <td width="35%"><a href="{% url 'about' item.product_image.product.id %}">{{ item.product_image.product.title }}</a></td>
+                                <td width="5%">
+                                    <form id="send_form{{ item.product_image.product.id }}">
+                                        {% csrf_token %}
+                                        <input type="number" class="form-control" value="{{ item.quantity }}"
+                                               id="input{{ item.product_image.product.id }}" name='quantity' min="1"
+                                               onchange="quantity_update({{ item.product_image.product.id }})">
+                                    </form>
+                                </td>
+                                <td><a href="{% url "cart:cart_remove" item.product_image.product.id %}" class="text-danger">Удалить</a></td>
+                                <td class="text-sm" id="item{{ item.product_image.product.id }}_price">{{ item.price }} руб</td>
+                                <td class="text-sm" id="item{{ item.product_image.product.id }}_total_price">{{ item.total_price }} руб</td>
+                            </tr>
+                        {% endfor %}
+                        <tr class="table-info">
+                            <td class="lead">Итого</td>
+                            <td colspan="4"></td>
+                            <td class="lead" id="cart_total_price">{{ cart.get_total_price }} руб</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <p class="text-right">
+                        <a href="{% url 'index' %}" class="btn btn-outline-primary">Продолжить покупки</a>
+                        <a href="{% url "orders:order_create" %}" class="btn btn-success">Перейти к оплате</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+            <h1 class="display-4">Корзина</h1>
+            <p class="lead">Пока тут пусто. Совершайте покупки, чтобы пополнить корзину!</p>
+        </div>
+    {% endif %}
+{% endblock %}
